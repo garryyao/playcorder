@@ -1,0 +1,9 @@
+[submodule "resources/troopjs-requirejs"]
+	path = resources/troopjs-requirejs
+	url = https://github.com/troopjs/troopjs-requirejs.git
+[submodule "src/css/ets-less-helper"]
+	path = src/css/ets-less-helper
+	url = https://stash.englishtown.com/scm/TSCHOOL/school-less-helper.git
+[submodule "resources/requirejs-text/2.0.9"]
+	path = resources/requirejs-text/2.0.9
+	url = https://github.com/requirejs/text.git

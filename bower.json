@@ -1,0 +1,16 @@
+{
+  "name": "package",
+  "version": "0.0.0",
+  "dependencies": {
+    "requirejs": "~2.1.9",
+    "when": "~2.7.1",
+    "playcorder-core-as3": "https://github.com/normanzb/playcorder-core-as3.git#0.2.8",
+    "recorder.js": "http://github.com/garryyao/recorder.js.git#dist",
+    "has": "*",
+    "swfobject": "*",
+    "poly": "~0.6.0"
+  },
+  "devDependencies": {
+    "jquery": "~2.0.3"
+  }
+}

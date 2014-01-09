@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PlayCorder Sample</title>
+    <script src="../bower_components/requirejs/require.js"></script>
+		<script src="config.js"></script>
+    <script>
+			require(['jquery','playcorder'], function($, Playcorder) {
+
+				function timecode(ms) {
+					var hms = {
+						h: Math.floor(ms / (60 * 60 * 1000)),
+						m: Math.floor((ms / 60000) % 60),
+						s: Math.floor((ms / 1000) % 60)
+					};
+					var tc = []; // Timecode array to be joined with '.'
+					if (hms.h > 0) {
+						tc.push(hms.h);
+					}
+					tc.push((hms.m < 10 && hms.h > 0 ? "0" + hms.m : hms.m));
+					tc.push((hms.s < 10 ? "0" + hms.s : hms.s));
+					return tc.join(':');
+				}
+
+				Playcorder().then(function(recorder) {
+
+					$('.control').on('click', 'a', function handleControl(evt) {
+						var target = $(evt.target);
+						var type = target.attr('id');
+						API[type](target);
+					});
+
+					// The recorded stuff.
+					var recorded;
+
+					var API = {
+						record: function($btn) {
+							recorder.record({
+							}).then(function onCompleted(record) {
+									recorded = record;
+									$btn.text('Record').attr('id','record');
+								}, function onError() {
+									$btn.text('Recording error, try again!').attr('id', 'record');
+									setTimeout(function() {
+										$btn.text('Record');
+									}, 2000);
+							}, function onProgress(ms) {
+									if($btn.attr('id') === 'record') {
+										$btn.text('Stop').attr('id', 'stop');
+									}
+									$('#time').text(timecode(ms));
+							});
+						},
+
+						play: function($btn) {
+							recorded.play().then(function onCompleted() {
+								$btn.text('Play').attr('id', 'play');
+							}, undefined, function onProgress(ms) {
+								if ($btn.attr('id') === 'play') {
+									$btn.text('Stop').attr('id', 'stop');
+								}
+								$('#time').text(timecode(ms));
+							});
+						},
+
+						stop: function() {
+							(recorded || recorder).stop();
+						},
+
+						upload: function() {
+							recorded.upload({
+								url: "https://api.soundcloud.com/tracks.json?oauth_token=" + SC.options.access_token,
+								audioParam: "track[asset_data]",
+								params: {
+									"track[title]": "recorder.js track test",
+									"track[sharing]": "private"
+								}
+							}).then(function(responseText) {
+								alert(responseText);
+							});
+						}
+					}
+				});
+			});
+    </script>
+		<style>
+			body {
+				font-family: Helvetica;
+				background-color: #ccc;
+			}
+
+			body, a, a:visited, a:active, a:hover {
+				color: #111;
+			}
+
+			h1 {
+				font-weight: bold;
+				font-size: 16px;
+			}
+
+			#wrapper {
+				background-color: #aaa;
+				text-align: center;
+				width: 500px;
+				margin: 10px auto;
+				padding: 10px;
+			}
+		</style>
+</head>
+<body>
+<div id="wrapper">
+	<h1><a href="http://github.com/jwagener/recorder">Recorder Example</a></h1>
+
+	<p>
+		This is a very basic example for the Recorder.js.
+		Checkout <a href="http://github.com/jwagener/recorder">GitHub</a> for details and have a look at the source for this
+		file.
+		Start by clicking record:
+	</p>
+	<div class="control">
+		<a href="javascript:void(0)" id="record">Record</a>
+		<a href="javascript:void(0)" id="play">Play</a>
+		<a href="javascript:void(0)" id="upload">Upload</a>
+	</div>
+
+	<span id="time">0:00</span>
+</div>
+</body>
+</html>

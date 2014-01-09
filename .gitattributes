@@ -1,0 +1,14 @@
+# These files are text and should be normalized (convert crlf => lf)
+*.cs      text diff=csharp
+*.js      text
+*.css     text
+*.aspx    text
+*.xaml    text
+*.config  text
+*.csproj  text
+*.vbproj  text
+*.sln     text
+*.tt      text
+*.ps1     text
+*.cmd     text
+*.msbuild text
