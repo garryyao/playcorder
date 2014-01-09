@@ -1,6 +1,6 @@
 {
   "name": "package",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "requirejs": "~2.1.9",
     "when": "~2.7.1",
