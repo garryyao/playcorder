@@ -62,6 +62,7 @@ define(['when', 'swfobject', 'poly/array'], function(when, swfobject) {
 				bind(player, 'started', id, tracking(df));
 				bind(player, 'stopped', id, df.resolve);
 				bind(player, 'error', id, df.reject);
+				player.start();
 				return df.promise;
 			},
 
